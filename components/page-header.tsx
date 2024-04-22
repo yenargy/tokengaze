@@ -4,12 +4,12 @@ import * as React from "react"
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { SearchDialog } from './search-dialog';
 import type { Token } from '@/types/token';
-import { useIsConnected } from '@/lib/wallet-utils';
 import TokenDetails from "./token-details";
 import TokenChart from "./token-chart";
+import { useAccount } from "wagmi";
 
 export default function PageHeader() {
-  const isConnected = useIsConnected();
+  const { isConnected } = useAccount();
   const [tokenID, setTokenID] = React.useState<string>("ethereum")
   const [tokenContract, setTokenContract] = React.useState<string>()
 

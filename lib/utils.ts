@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function convertDataToChartFormat(data: [number, number][]) {
+export function parseChartData(data: [number, number][]) {
   return data.map(([timestamp, price]) => ({
     date: new Date(timestamp).toLocaleDateString('en-US', { day: '2-digit', month: 'short' }),
     priceText: formatCurrency(price, "", "en"),

@@ -28,20 +28,20 @@ const { wallets } = getDefaultWallets();
 
 const myTheme = merge(darkTheme(), {
     colors: {
-      accentColor: 'hsl(221 100% 44%)',
+      accentColor: '#674ADB',
       accentColorForeground: 'hsl(0, 0%, 100%)',
-      actionButtonBorder: 'hsl(228, 9%, 11%)',
-      actionButtonBorderMobile: 'hsl(228, 9%, 11%)',
+      actionButtonBorder: '#232325',
+      actionButtonBorderMobile: '#232325',
       actionButtonSecondaryBackground: 'hsl(0, 0%, 100%)',
       closeButton: 'hsl(226, 11%, 64%)',
       closeButtonBackground: 'hsl(228, 5%, 18%)',
-      connectButtonBackground: 'hsl(228, 9%, 11%)',
+      connectButtonBackground: '#232325',
       connectButtonBackgroundError: 'hsl(360,100%,64%)',
       connectButtonInnerBackground: 'hsl(225, 4%, 21%)',
       connectButtonText: 'hsl(0, 0%, 100%)',
       connectButtonTextError: 'hsl(0,0%,100%)',
       error: 'hsl(0,0%,100%)',
-      generalBorder: 'hsl(228, 5%, 18%)',
+      generalBorder: '#232325',
       generalBorderDim: 'rgba(0, 0, 0, 0.03)',
       menuItemBackground: 'hsl(229, 9%, 20%)',
       modalBackdrop: 'rgba(0, 0, 0, 0.5)',
@@ -75,7 +75,7 @@ const myTheme = merge(darkTheme(), {
       walletLogo: '0px 2px 16px rgba(0, 0, 0, 0.16)',
     },
     blurs: {
-      modalOverlay: 'blur(0px)', // e.g. 'blur(4px)'
+      modalOverlay: 'blur(10px)', // e.g. 'blur(4px)'
     },
     fonts: {
       body: '',
@@ -94,9 +94,6 @@ const config = getDefaultConfig({
       wallets: [argentWallet, trustWallet, ledgerWallet],
     },
   ],
-  // transports: {
-  //   [mainnet.id]: http('https://eth-mainnet.g.alchemy.com/v2/-Jq9Zd1ofDYnBp6yK8hPlLOLlLe2AKyR'),
-  // },
   chains: [
     mainnet,
     polygon,

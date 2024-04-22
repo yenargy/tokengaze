@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { convertDataToChartFormat } from "@/lib/utils";
+import { parseChartData } from "@/lib/utils";
 import { COINGECKO_API_URL } from "@/config/constants";
 import { formatCurrency } from "@coingecko/cryptoformat";
 
@@ -44,7 +44,7 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
     .then(response => {
       response.json()
       .then(data => {
-        const formattedChartData = convertDataToChartFormat(data.prices);
+        const formattedChartData = parseChartData(data.prices);
         console.log(formattedChartData);
         setChartData(formattedChartData);
       })
@@ -58,7 +58,7 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
     if (active && payload && payload.length) {
       return (
         <div className="backdrop-blur-xl bg-white/10 p-2">
-          <p className="text-[10px] opacity-30 pb-2">{label}</p>
+          <p className="text-[10px] opacity-50 pb-2">{label}</p>
           <p className="text-base">{formatCurrency(payload[0].value, "USD", "en")}</p>
         </div>
       );
@@ -66,6 +66,12 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
   
     return null;
   };
+
+  const CustomActiveDot: React.FC<any> = (props) => {
+    return (
+      <circle cx={props.cx} cy={props.cy} r={10} fill="url(#activeDot)" className="blur-xs"/>
+    )
+  }
 
   return (
     <Card className="w-full">
@@ -84,11 +90,23 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
                 bottom: 0,
               }}
             >
+              <defs>
+                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#8E72FF" stopOpacity={1}/>
+                  <stop offset="100%" stopColor="#BE4ADB" stopOpacity={0.2}/>
+                </linearGradient>
+                <radialGradient id="activeDot" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#BCACFF" stopOpacity={1}/>
+                  <stop offset="20%" stopColor="#BCACFF" stopOpacity={0.4}/>
+                  <stop offset="80%" stopColor="#8E72FF" stopOpacity={0.1}/>
+                  <stop offset="100%" stopColor="#8E72FF" stopOpacity={0}/>
+                </radialGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" className="opacity-10"/>
               <XAxis tickLine={false} tickMargin={10} dataKey="date" className="text-[9px]"/>
               <YAxis tickLine={false} className="text-[9px]" domain={['auto', 'auto']}/>
-              <Tooltip content={<CustomTooltip />} />
-              <Area type="monotone" dataKey="price" stroke="#8884d8" fill="#8884d8" />
+              <Tooltip animationDuration={300} content={<CustomTooltip />} />
+              <Area type="monotone" dataKey="price" stroke="none" fill="url(#chartGradient)" animationDuration={300} activeDot={<CustomActiveDot />}/>
             </AreaChart>
           </ResponsiveContainer>
         </div>

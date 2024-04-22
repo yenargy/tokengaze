@@ -79,7 +79,7 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
         <CardTitle className="text-xs font-normal opacity-50">PRICE ACTION IN PAST 30 DAYS</CardTitle>
       </CardHeader>
       <CardContent className="pl-2 pt-8">
-        <div className="h-[480px]">
+        <div className="h-[240px] md:h-[480px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={chartData}

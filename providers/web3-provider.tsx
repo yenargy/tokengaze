@@ -75,7 +75,7 @@ const myTheme = merge(darkTheme(), {
       walletLogo: '0px 2px 16px rgba(0, 0, 0, 0.16)',
     },
     blurs: {
-      modalOverlay: 'blur(10px)', // e.g. 'blur(4px)'
+      modalOverlay: 'blur(10px)'
     },
     fonts: {
       body: '',

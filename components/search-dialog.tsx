@@ -14,39 +14,11 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import type { Token } from '@/types/token';
 import { Search } from "lucide-react";
-
+import { COINGECKO_API_URL, SUGGESTED_TOKENS } from "@/config/constants";
 
 interface SearchDialogProps {
   onResultClick: (id: Token) => void;
 }
-
-const suggestedTokens = [
-  {
-    id: 'pepe',
-    name: 'Pepe',
-    platforms: {
-      ethereum: "0x6982508145454ce325ddbe47a25d4ec3d2311933"
-    },
-    symbol: 'pepe'
-  },
-  {
-    id: 'shiba-inu',
-    name: 'Shiba Inu',
-    platforms: {
-      ethereum: "0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce"
-    },
-    symbol: 'shib'
-  },
-  {
-    id: 'arbitrum',
-    name: 'Arbitrum',
-    platforms: {
-      ethereum: "0xb50721bcf8d664c30412cfbc6cf7a15145234ad1"
-    },
-    symbol: 'arb'
-  }
-]
-
 
 export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => {
   const [open, setOpen] = React.useState(false)
@@ -54,17 +26,11 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
   const [commandInput, setCommandInput] = React.useState<string>("")
   const [results, setResults] = React.useState<Token[]>([]);
   const [erc20Tokens, setErc20Tokens] = React.useState<Token[]>([]);
-  const erc20TokensRef = React.useRef(erc20Tokens);
 
   // Fetching erc20Tokens on mount
   React.useEffect(() => {
     fetchErc20Tokens();
   }, []);
-
-  // Using ref to always get the latest erc20Tokens in searchTokens
-  React.useEffect(() => {
-    erc20TokensRef.current = erc20Tokens;
-  }, [erc20Tokens]);
 
   // function to fetch erc20Tokens using coinGecko API
   const fetchErc20Tokens = () => {
@@ -73,7 +39,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
       headers: {accept: 'application/json', 'x-cg-demo-api-key': process.env.NEXT_PUBLIC_COINGECKO_API_KEY || ''}
     };
     setSearching(true)
-    fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=true', options)
+    fetch(`${COINGECKO_API_URL}/list?include_platform=true`, options)
     .then(response => {
       response.json()
       .then(data => {
@@ -93,21 +59,16 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
       setResults([]);
       return;
     }
-    const filteredNames = erc20TokensRef.current.filter((token: Token) =>
-      token.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const filteredSymbols = erc20TokensRef.current.filter((token: Token) =>
+    const filteredResults = erc20Tokens.filter((token: Token) =>
+      token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    const filteredResults = [...filteredNames, ...filteredSymbols].filter((value, index, self) => {
-      return index === self.findIndex((t) => t.id === value.id);
-    });
     setSearching(false);
     setResults(filteredResults);
   };
 
   // Wrap searchTokens with debounce to avoid unnecessary re-renders
-  const debouncedSearchTokens = React.useCallback(debounce(searchTokens, 1000), []);
+  const debouncedSearchTokens = React.useCallback(debounce(searchTokens, 250), [erc20Tokens]);
 
   // Using debouncedSearchTokens to search for tokens on input
   React.useEffect(() => {
@@ -154,7 +115,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
             <CommandItem
               key='pepe' 
               value='pepe'
-              onSelect={() => {onResultClick(suggestedTokens[0]); setOpen(false)}}>
+              onSelect={() => {onResultClick(SUGGESTED_TOKENS[0]); setOpen(false)}}>
               <Image
                 alt='ethereum'
                 className="aspect-square rounded-3xl object-cover mr-2"
@@ -170,7 +131,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
             <CommandItem
               key='shiba' 
               value='shiba'
-              onSelect={() => {onResultClick(suggestedTokens[1]); setOpen(false)}}>
+              onSelect={() => {onResultClick(SUGGESTED_TOKENS[1]); setOpen(false)}}>
               <Image
                 alt='arbitrium'
                 className="aspect-square rounded-3xl object-cover mr-2"
@@ -186,7 +147,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
             <CommandItem
               key='arbitrum' 
               value='arbitrum'
-              onSelect={() => {onResultClick(suggestedTokens[2]); setOpen(false)}}>
+              onSelect={() => {onResultClick(SUGGESTED_TOKENS[2]); setOpen(false)}}>
               <Image
                 alt='optimism'
                 className="aspect-square rounded-3xl object-cover mr-2"
@@ -206,13 +167,6 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
                   key={result.id} 
                   value={result.name} 
                   onSelect={() => {onResultClick(result); setOpen(false)}}>
-                  {/* <Image
-                    alt={result.name}
-                    className="aspect-square rounded-3xl object-cover mr-2"
-                    height="32"
-                    src={result.large}
-                    width="32"
-                  /> */}
                   <span>{result.name}</span>
                   <kbd className="pointer-events-none absolute right-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-20 sm:flex">
                     <span className="text-xs">↵</span>

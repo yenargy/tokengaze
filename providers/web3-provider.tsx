@@ -85,7 +85,7 @@ const myTheme = merge(darkTheme(), {
 
 
 const config = getDefaultConfig({
-  appName: 'web3-boilerplate',
+  appName: 'tokengaze',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
   wallets: [
     ...wallets,

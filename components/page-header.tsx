@@ -11,10 +11,12 @@ import TokenChart from "./token-chart";
 export default function PageHeader() {
   const isConnected = useIsConnected();
   const [tokenID, setTokenID] = React.useState<string>("ethereum")
+  const [tokenContract, setTokenContract] = React.useState<string>()
 
   const handleResultClick = (token: Token) => {
     console.log("Clicked result ID:", token);
     setTokenID(token.id);
+    setTokenContract(token.platforms.ethereum);
   }
 
   return (
@@ -23,7 +25,7 @@ export default function PageHeader() {
         <div className='w-full'>
           <SearchDialog onResultClick={handleResultClick} />
           <div className="flex space-x-4 pt-4 items-start">
-            <TokenDetails id={tokenID}/>
+            <TokenDetails id={tokenID} contract={tokenContract || ''}/>
             <TokenChart id={tokenID} />
           </div>
         </div>

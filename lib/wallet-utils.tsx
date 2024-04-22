@@ -5,13 +5,17 @@ export function useIsConnected() {
   return isConnected;
 }
 
-export function getUserBalance() {
+export function getUserBalance(contract: string) {
   const address = getUserAddress();
   if (!address) {
     return null;
   }
-  const { data: balance, isLoading: isBalanceLoading } = useBalance({ address });
-  return balance?.formatted.slice(0,5);
+  const { data: balance, isLoading: isBalanceLoading } = useBalance({
+    address,
+    token: contract as `0x${string}`,
+  });
+  console.log(balance);
+  return balance?.formatted
 }
 
 export function getUserAddress() {

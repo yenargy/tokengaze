@@ -12,7 +12,7 @@ export default function Navbar() {
         height={37}
         priority
       />
-      <ConnectButton chainStatus="none" label="Connect Wallet" />
+      <ConnectButton chainStatus="none" showBalance={false} label="Connect Wallet" />
     </div>
   );
 }

@@ -16,8 +16,9 @@ interface TokenDetailsProps {
 }
 
 interface ChartData {
-  time: string,
-  price: number
+  date: string,
+  price: number,
+  priceText: string
 }
 
 const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
@@ -32,14 +33,13 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
       method: 'GET',
       headers: {accept: 'application/json', 'x-cg-demo-api-key': process.env.NEXT_PUBLIC_COINGECKO_API_KEY || ''}
     };
-    fetch(`${COINGECKO_API_URL}/${id}/market_chart?vs_currency=usd&days=30`, options)
+    fetch(`${COINGECKO_API_URL}/${id}/market_chart?vs_currency=usd&days=30&interval=daily`, options)
     .then(response => {
       response.json()
       .then(data => {
-        console.log(data);
         const formattedChartData = convertDataToChartFormat(data.prices);
-        setChartData(formattedChartData);
         console.log(formattedChartData);
+        setChartData(formattedChartData);
       })
     })
     .catch(err => {
@@ -50,7 +50,7 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-base font-normal">24hr price change</CardTitle>
+        <CardTitle className="text-xs font-normal opacity-50">PRICE ACTION IN PAST 30 DAYS</CardTitle>
       </CardHeader>
       <CardContent className="pl-2 pt-8">
         <div className="h-[480px]">
@@ -58,17 +58,17 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
             <AreaChart
               data={chartData}
               margin={{
-                top: 5,
-                right: 10,
-                left: 0,
-                bottom: 0,
+                top: 0,
+                right: 20,
+                left: -5,
+                bottom: 20,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" className="opacity-10"/>
-              <XAxis dataKey="time" className="text-[10px] leading-12"/>
+              <XAxis tickLine={false} tickSize={16} dataKey="date" className="text-[8px]"/>
+              <YAxis tickLine={false} tickSize={10} className="text-[8px]" domain={['auto', 'auto']}/>
               <Tooltip />
               <Area type="monotone" dataKey="price" stroke="#8884d8" fill="#8884d8" />
-              <YAxis className="text-[10px]" domain={["dataMin", "dataMax"]} />
             </AreaChart>
           </ResponsiveContainer>
         </div>

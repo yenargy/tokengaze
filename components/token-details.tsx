@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/card"
 import Image from "next/image"
 import { COINGECKO_API_URL } from "@/config/constants"
+import { formatPrice, formatNumber } from "@/lib/utils"
+import { formatCurrency } from "@coingecko/cryptoformat";
 
 interface TokenDetailsProps {
   id: string,
@@ -74,12 +76,12 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id, contract }) => {
                 <Image
                   alt='token'
                   className="aspect-square rounded-3xl object-cover mr-2"
-                  height="32"
+                  height="24"
                   src={tokenData.image}
-                  width="32"
+                  width="24"
                 />
                 <div className="flex space-x-2 items-baseline">
-                  <h3 className="font-light">{tokenData.name}</h3>
+                  <h3 className="font-light text-xl">{tokenData.name}</h3>
                   <p className="text-sm opacity-20">{tokenData.symbol.toUpperCase()}</p>
                 </div>
               </div>
@@ -87,13 +89,13 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id, contract }) => {
           </CardHeader>
           <CardContent className="flex justify-between">
             <div className="flex flex-col space-y-2">
-              <p className="text-xs font-light opacity-50">TOKEN PRICE</p>
-              <p className="text-lg font-normal">${new Intl.NumberFormat('en-US', { maximumSignificantDigits: 5 }).format(tokenData.current_price)}</p>
+              <p className="text-xs font-light opacity-50">CURRENT PRICE</p>
+              <p className="text-lg font-normal">{formatCurrency(tokenData.current_price, "USD", "en")}</p>
               <PriceChangeIndicator value={tokenData.price_change_percentage_24h} />
             </div>
             <div className="flex flex-col space-y-2">
               <p className="text-xs font-light opacity-50">YOUR HOLDINGS</p>
-              <p className="text-lg font-normal">${new Intl.NumberFormat('en-US', { maximumSignificantDigits: 5 }).format(tokenData.current_price * Number(userBalance))}</p>
+              <p className="text-lg font-normal">{formatCurrency((tokenData.current_price * Number(userBalance)), "USD", "en")}</p>
               <p className="text-xs opacity-50">{userBalance?.slice(0,5)} {tokenData.symbol.toUpperCase()}</p>
             </div>
           </CardContent>
@@ -102,23 +104,23 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id, contract }) => {
           <CardContent className="flex flex-col space-y-4 pt-8">
             <div className="flex w-full justify-between items-center">
               <p className="text-xs font-light opacity-50">ALL TIME HIGH</p>
-              <p className="text-xs font-normal opacity-80">${new Intl.NumberFormat('en-US', { maximumSignificantDigits: 5 }).format(tokenData.ath)}</p>
-            </div>
-            <div className="flex w-full justify-between items-center">
-              <p className="text-xs font-light opacity-50">FDV</p>
-              <p className="text-xs font-normal opacity-80">${new Intl.NumberFormat('en-US', { maximumSignificantDigits: 5 }).format(tokenData.fully_diluted_valuation)}</p>
+              <p className="text-xs font-normal opacity-80">{formatCurrency(tokenData.ath, "USD", "en")}</p>
             </div>
             <div className="flex w-full justify-between items-center">
               <p className="text-xs font-light opacity-50">MARKET CAP</p>
-              <p className="text-xs font-normal opacity-80">${new Intl.NumberFormat('en-US', { maximumSignificantDigits: 5 }).format(tokenData.market_cap)}</p>
+              <p className="text-xs font-normal opacity-80">{formatCurrency(tokenData.market_cap, "USD", "en")}</p>
+            </div>
+            <div className="flex w-full justify-between items-center">
+              <p className="text-xs font-light opacity-50">FDV</p>
+              <p className="text-xs font-normal opacity-80">{formatCurrency(tokenData.fully_diluted_valuation, "USD", "en")}</p>
             </div>
             <div className="flex w-full justify-between items-center">
               <p className="text-xs font-light opacity-50">TOTAL SUPPLY</p>
-              <p className="text-xs font-normal opacity-80">{new Intl.NumberFormat('en-US').format(tokenData.total_supply)} ETH</p>
+              <p className="text-xs font-normal opacity-80">{formatCurrency(tokenData.total_supply, "", "en")} ETH</p>
             </div>
             <div className="flex w-full justify-between items-center">
               <p className="text-xs font-light opacity-50">CIRCULATING SUPPLY</p>
-              <p className="text-xs font-normal opacity-80">{new Intl.NumberFormat('en-US').format(tokenData.circulating_supply)} ETH</p>
+              <p className="text-xs font-normal opacity-80">{formatCurrency(tokenData.circulating_supply, "", "en")} ETH</p>
             </div>
           </CardContent>
         </Card>

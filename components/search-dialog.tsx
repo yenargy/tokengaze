@@ -13,6 +13,7 @@ import {
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import type { Token } from '@/types/token';
+import { Search } from "lucide-react";
 
 
 interface SearchDialogProps {
@@ -132,14 +133,15 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
         className="relative h-12 w-full justify-start items-center bg-background text-sm font-normal text-muted-foreground shadow-none sm:pr-12"
         onClick={() => setOpen(true)}
       >
-        <span className="hidden lg:inline-flex">Search tokens...</span>
+        <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+        <span className="hidden lg:inline-flex">Search ERC-20 tokens...</span>
         <span className="inline-flex lg:hidden">Search...</span>
         <kbd className="pointer-events-none absolute right-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Seach for a token name..." value={commandInput} onValueChange={setCommandInput}/>
+        <CommandInput placeholder="Start typing an erc-20 token..." value={commandInput} onValueChange={setCommandInput}/>
         <CommandList>
           <CommandEmpty>{ searching ? "Searching...": "No results found." }</CommandEmpty>
           <CommandGroup heading="Suggestions">

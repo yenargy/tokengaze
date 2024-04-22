@@ -59,14 +59,14 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
               data={chartData}
               margin={{
                 top: 0,
-                right: 20,
-                left: -5,
-                bottom: 20,
+                right: 10,
+                left: -20,
+                bottom: 0,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" className="opacity-10"/>
-              <XAxis tickLine={false} tickSize={16} dataKey="date" className="text-[8px]"/>
-              <YAxis tickLine={false} tickSize={10} className="text-[8px]" domain={['auto', 'auto']}/>
+              <XAxis tickLine={false} tickMargin={10} dataKey="date" className="text-[9px]"/>
+              <YAxis tickLine={false} className="text-[9px]" domain={['auto', 'auto']}/>
               <Tooltip />
               <Area type="monotone" dataKey="price" stroke="#8884d8" fill="#8884d8" />
             </AreaChart>

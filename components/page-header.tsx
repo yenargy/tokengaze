@@ -4,14 +4,23 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance } from 'wagmi';
 import { SearchDialog } from './ui/search-dialog';
 
-export default function Table() {
+export default function PageHeader() {
   const { address, isConnected, connector } = useAccount();
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address: address,
   })
 
-  const handleResultClick = (id: string) => {
-    console.log("Clicked result ID:", id);
+  interface Token {
+    id: string;
+    name: string;
+    platforms: {
+      ethereum: string;
+    };
+    symbol: string;
+  }
+
+  const handleResultClick = (token: Token) => {
+    console.log("Clicked result ID:", token);
     // Add any additional logic you need to handle after clicking the item
   }
 

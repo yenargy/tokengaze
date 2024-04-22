@@ -102,11 +102,39 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
                   <stop offset="100%" stopColor="#8E72FF" stopOpacity={0}/>
                 </radialGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" className="opacity-10"/>
-              <XAxis tickLine={false} tickMargin={10} dataKey="date" className="text-[9px]"/>
-              <YAxis tickLine={false} className="text-[9px]" domain={['auto', 'auto']}/>
-              <Tooltip animationDuration={300} content={<CustomTooltip />} />
-              <Area type="monotone" dataKey="price" stroke="none" fill="url(#chartGradient)" animationDuration={300} activeDot={<CustomActiveDot />}/>
+              <CartesianGrid 
+                strokeDasharray="3 3" 
+                className="opacity-10"
+              />
+              <XAxis
+                stroke="#232325"
+                tick={{fill: '#616163'}}
+                tickLine={false} 
+                tickMargin={10} 
+                dataKey="date"
+                className="text-[9px]"
+              />
+              <YAxis 
+                stroke="#232325"
+                tick={{fill: '#616163'}}
+                tickLine={false} 
+                className="text-[9px]" 
+                domain={['auto', 'auto']}
+              />
+              <Tooltip
+                cursor={{ stroke: '#424242', strokeWidth: 1 }}
+                animationDuration={300} 
+                content={<CustomTooltip />} 
+              />
+              <Area 
+                type="monotone" 
+                dataKey="price" 
+                stroke="none" 
+                legendType={'square'} 
+                fill="url(#chartGradient)" 
+                animationDuration={300} 
+                activeDot={<CustomActiveDot />}
+              />
             </AreaChart>
           </ResponsiveContainer>
         </div>

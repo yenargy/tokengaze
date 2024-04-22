@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import { convertDataToChartFormat } from "@/lib/utils";
 import { COINGECKO_API_URL } from "@/config/constants";
+import { formatCurrency } from "@coingecko/cryptoformat";
 
 interface TokenDetailsProps {
   id: string;
@@ -19,6 +20,12 @@ interface ChartData {
   date: string,
   price: number,
   priceText: string
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
 }
 
 const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
@@ -47,6 +54,19 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
     });
   };
 
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="backdrop-blur-xl bg-white/10 p-2">
+          <p className="text-[10px] opacity-30 pb-2">{label}</p>
+          <p className="text-base">{formatCurrency(payload[0].value, "USD", "en")}</p>
+        </div>
+      );
+    }
+  
+    return null;
+  };
+
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -67,7 +87,7 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
               <CartesianGrid strokeDasharray="3 3" className="opacity-10"/>
               <XAxis tickLine={false} tickMargin={10} dataKey="date" className="text-[9px]"/>
               <YAxis tickLine={false} className="text-[9px]" domain={['auto', 'auto']}/>
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
               <Area type="monotone" dataKey="price" stroke="#8884d8" fill="#8884d8" />
             </AreaChart>
           </ResponsiveContainer>

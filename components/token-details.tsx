@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/card"
 import Image from "next/image"
 import { COINGECKO_API_URL } from "@/config/constants"
-import { formatPrice, formatNumber } from "@/lib/utils"
 import { formatCurrency } from "@coingecko/cryptoformat";
 
 interface TokenDetailsProps {

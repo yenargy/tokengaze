@@ -2,6 +2,7 @@
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance } from 'wagmi';
+import { SearchDialog } from './ui/search-dialog';
 
 export default function Table() {
   const { address, isConnected, connector } = useAccount();
@@ -10,16 +11,20 @@ export default function Table() {
   })
 
   return (
-    <div className="flex flex-col items-center space-y-4 pt-24 pb-12">
+    <div className="flex w-1/3 flex-col items-center space-y-4 pt-24 pb-12">
       {isConnected ? 
-        <div>{isBalanceLoading ? 'loading' : balance ? `${balance?.formatted} ${balance?.symbol}` : 'n/a'}</div>
+        <>
+          {/* {isBalanceLoading ? 'loading' : balance ? `${balance?.formatted} ${balance?.symbol}` : 'n/a'} */}
+          <SearchDialog />
+        </>
         : 
         <>
           <h1 className='text-5xl text-center font-extralight'>Search and discover <br/> your crypto tokens</h1>
-          <p className='text-xl opacity-30 font-light'>Connect your wallet to get started</p>
+          <p className='text-xl opacity-30 font-light py-6'>Connect your wallet to get started</p>
           <ConnectButton/>
         </>
       }
     </div>
   );
 }
+

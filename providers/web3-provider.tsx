@@ -4,9 +4,9 @@ import {
   RainbowKitProvider,
   getDefaultWallets,
   getDefaultConfig,
-  darkTheme,
-  Theme,
+  darkTheme
 } from '@rainbow-me/rainbowkit';
+import type { Theme } from '@rainbow-me/rainbowkit';
 import {
   argentWallet,
   trustWallet,

@@ -8,7 +8,7 @@ import { useAccount } from 'wagmi';
 export default function Navbar() {
   const { isConnected } = useAccount();
   return (
-    <div className='flex sticky top-0 z-50 justify-between w-full px-12 py-4 backdrop-blur-lg border-b border-b-white/10'>
+    <div className='flex sticky top-0 z-50 justify-between w-full px-4 md:px-12 py-4 backdrop-blur-lg border-b border-b-white/10'>
       <Image
         className=""
         src="/logo.svg"

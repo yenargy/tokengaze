@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
+import { GeistMono } from 'geist/font/mono';
 import '@rainbow-me/rainbowkit/styles.css';
 import { Web3Provider } from "@/providers/web3Provider";
-
 
 export const metadata: Metadata = {
   title: "Tokengaze",
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={GeistMono.className}>
       <body>
         <Web3Provider>
           {children}

@@ -1,11 +1,6 @@
 "use client"
 
 import * as React from "react"
-import {
-  Calculator,
-  Calendar,
-  Smile,
-} from "lucide-react"
 import debounce from 'lodash.debounce';
 import {
   CommandDialog,
@@ -14,30 +9,11 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import type { Token } from '@/types/token';
 
-const cats = ["Siamese", "British Shorthair", "Maine Coon", "Persian", "Ragdoll", "Sphynx"]
-const dogs = ["German Shepherd", "Bulldog", "Labrador Retriever", "Golden Retriever", "French Bulldog", "Siberian Husky"]
-
-interface ResultItem {
-  id: string;
-  name: string;
-  thumb: string;
-  large: string;
-}
-
-interface Token {
-  id: string;
-  name: string;
-  platforms: {
-    ethereum: string;
-  };
-  symbol: string;
-}
 
 interface SearchDialogProps {
   onResultClick: (id: Token) => void;
@@ -68,7 +44,6 @@ const suggestedTokens = [
     },
     symbol: 'arb'
   }
-
 ]
 
 
@@ -94,7 +69,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
   const fetchErc20Tokens = () => {
     const options = {
       method: 'GET',
-      headers: {accept: 'application/json', 'x-cg-demo-api-key': 'CG-xoH5ZX6EqaDUEtUduG4HJR49'}
+      headers: {accept: 'application/json', 'x-cg-demo-api-key': process.env.NEXT_PUBLIC_COINGECKO_API_KEY || ''}
     };
     setSearching(true)
     fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=true', options)
@@ -115,15 +90,13 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
   const searchTokens = (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([]);
-      setSearching(false);
       return;
     }
-    setSearching(true);
     const filteredResults = erc20TokensRef.current.filter((token: Token) =>
       token.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    setResults(filteredResults);
     setSearching(false);
+    setResults(filteredResults);
   };
 
   // Wrap searchTokens with debounce to avoid unnecessary re-renders
@@ -132,10 +105,9 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
   // Using debouncedSearchTokens to search for tokens on input
   React.useEffect(() => {
     if (commandInput) {
-      console.log('going in here');
+      setSearching(true);
       debouncedSearchTokens(commandInput);
     } else {
-      console.log('setting to 0');
       setResults([]);
     }
   }, [commandInput, debouncedSearchTokens])
@@ -174,7 +146,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
             <CommandItem
               key='pepe' 
               value='pepe'
-              onSelect={() => onResultClick(suggestedTokens[0])}>
+              onSelect={() => {onResultClick(suggestedTokens[0]); setOpen(false)}}>
               <Image
                 alt='ethereum'
                 className="aspect-square rounded-3xl object-cover mr-2"
@@ -190,7 +162,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
             <CommandItem
               key='shiba' 
               value='shiba'
-              onSelect={() => onResultClick(suggestedTokens[1])}>
+              onSelect={() => {onResultClick(suggestedTokens[1]); setOpen(false)}}>
               <Image
                 alt='arbitrium'
                 className="aspect-square rounded-3xl object-cover mr-2"
@@ -206,7 +178,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
             <CommandItem
               key='arbitrum' 
               value='arbitrum'
-              onSelect={() => onResultClick(suggestedTokens[2])}>
+              onSelect={() => {onResultClick(suggestedTokens[2]); setOpen(false)}}>
               <Image
                 alt='optimism'
                 className="aspect-square rounded-3xl object-cover mr-2"
@@ -225,7 +197,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
                 <CommandItem 
                   key={result.id} 
                   value={result.name} 
-                  onSelect={() => onResultClick(result)}>
+                  onSelect={() => {onResultClick(result); setOpen(false)}}>
                   {/* <Image
                     alt={result.name}
                     className="aspect-square rounded-3xl object-cover mr-2"

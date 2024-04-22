@@ -43,13 +43,14 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id, contract }) => {
   const [tokenMarketData, setTokenMarketData] = React.useState<TokenMarketData>();
   const [error, setError] = React.useState(null);
 
+  // Hook to fetch token details
   React.useEffect(() => {
     setTokenPriceData(undefined);
     setTokenMarketData(undefined);
     fetchCoinDataByID(id);
   }, [id]);
 
- 
+  // Fetch token details from coinGecko API  
   const fetchCoinDataByID = (id: string) => {
     const options = {
       method: 'GET',

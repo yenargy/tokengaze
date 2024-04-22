@@ -26,6 +26,7 @@ import merge from 'lodash.merge';
 
 const { wallets } = getDefaultWallets();
 
+// Customising rainbowkit 
 const myTheme = merge(darkTheme(), {
     colors: {
       accentColor: '#674ADB',

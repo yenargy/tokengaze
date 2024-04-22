@@ -31,10 +31,14 @@ interface CustomTooltipProps {
 const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
   const [chartData, setChartData] = React.useState<ChartData[]>();
 
+
+  // Hook to fetch chart data by ID
   React.useEffect(() => {
     fetchCoinDataByID(id);
   }, [id]);
 
+
+  // Fetch chart data from coinGecko API
   const fetchCoinDataByID = (id: string) => {
     const options = {
       method: 'GET',
@@ -54,6 +58,7 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
     });
   };
 
+  // Chart tooltip stylings
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
@@ -67,6 +72,7 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
     return null;
   };
 
+  // Chart active dot styling
   const CustomActiveDot: React.FC<any> = (props) => {
     return (
       <circle cx={props.cx} cy={props.cy} r={10} fill="url(#activeDot)" className="blur-xs"/>

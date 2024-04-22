@@ -14,7 +14,7 @@ To install the project, run the following command:
 bun install
 ```
 
-Setup environment variables. See `.env.example` for the required variables.
+Setup local environment variables. See `.env.example` for the required variables.
 
 ## Running the project
 Once installed, run the development server with:

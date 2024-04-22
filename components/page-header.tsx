@@ -10,12 +10,17 @@ export default function Table() {
     address: address,
   })
 
+  const handleResultClick = (id: string) => {
+    console.log("Clicked result ID:", id);
+    // Add any additional logic you need to handle after clicking the item
+  }
+
   return (
     <div className="flex w-1/3 flex-col items-center space-y-4 pt-24 pb-12">
       {isConnected ? 
         <>
           {/* {isBalanceLoading ? 'loading' : balance ? `${balance?.formatted} ${balance?.symbol}` : 'n/a'} */}
-          <SearchDialog />
+          <SearchDialog onResultClick={handleResultClick} />
         </>
         : 
         <>

@@ -1,11 +1,11 @@
 import Navbar from '@/components/navbar';
-import Table from '@/components/table';
+import PageHeader from '@/components/page-header';
 
 export default function Home() {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-start">
       <Navbar />
-      <Table />
+      <PageHeader />
     </main>
   );
 }

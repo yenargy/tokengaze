@@ -40,6 +40,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id }) => {
     fetchCoinDataByID(id);
   }, [id]);
 
+ 
   const fetchCoinDataByID = (id: string) => {
     const options = {
       method: 'GET',
@@ -63,44 +64,47 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id }) => {
 
 
   return (
-    tokenData ? (
       <Card className="w-[480px]">
-        <CardHeader>
-            <CardTitle>
-              <div className="flex items-center">
-                <Image
-                  alt='token'
-                  className="aspect-square rounded-3xl object-cover mr-2"
-                  height="32"
-                  src={tokenData.image}
-                  width="32"
-                />
-                <div className="flex space-x-2 items-baseline">
-                  <h3>{tokenData.name}</h3>
-                  <p className="text-sm opacity-20">{tokenData.symbol.toUpperCase()}</p>
-                </div>
+        {tokenData ? (
+          <>
+            <CardHeader>
+                <CardTitle>
+                  <div className="flex items-center">
+                    <Image
+                      alt='token'
+                      className="aspect-square rounded-3xl object-cover mr-2"
+                      height="32"
+                      src={tokenData.image}
+                      width="32"
+                    />
+                    <div className="flex space-x-2 items-baseline">
+                      <h3 className="font-light">{tokenData.name}</h3>
+                      <p className="text-sm opacity-20">{tokenData.symbol.toUpperCase()}</p>
+                    </div>
+                  </div>
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-between">
+              <div className="flex flex-col space-y-2">
+                <p className="text-xs font-light opacity-50">TOKEN PRICE</p>
+                <p className="text-lg font-normal">${tokenData.current_price}</p>
+                <p className="text-xs opacity-50 flex space-x-1">
+                  <ChevronUp size={16} />
+                  <span>{tokenData.price_change_percentage_24h.toFixed(2)}%</span>
+                </p>
               </div>
-            </CardTitle>
-        </CardHeader>
-        <CardContent className="flex justify-between">
-          <div className="flex flex-col space-y-2">
-            <p className="text-xs font-extralight opacity-50">TOKEN PRICE</p>
-            <p className="text-lg">${tokenData.current_price}</p>
-            <p className="text-xs opacity-50 flex space-x-1">
-              <ChevronUp size={16} />
-              <span>{tokenData.price_change_percentage_24h.toFixed(2)}%</span>
-            </p>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <p className="text-xs font-extralight opacity-50">YOUR HOLDINGS</p>
-            <p className="text-lg">${tokenData.current_price}</p>
-            <p className="text-xs opacity-50">{userBalance} {tokenData.symbol.toUpperCase()}</p>
-          </div>
-        </CardContent>
+              <div className="flex flex-col space-y-2">
+                <p className="text-xs font-light opacity-50">YOUR HOLDINGS</p>
+                <p className="text-lg font-normal">${tokenData.current_price}</p>
+                <p className="text-xs opacity-50">{userBalance} {tokenData.symbol.toUpperCase()}</p>
+              </div>
+            </CardContent>
+          </>
+        )
+        : (
+          "Empty here"
+        )}
       </Card>
-    ) : (
-      "Empty here"
-    )
   );
 }
 

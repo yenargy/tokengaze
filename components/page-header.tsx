@@ -22,7 +22,7 @@ export default function PageHeader() {
       {isConnected ? 
         <div className='w-full'>
           <SearchDialog onResultClick={handleResultClick} />
-          <div className="flex space-x-4 pt-4">
+          <div className="flex space-x-4 pt-4 items-start">
             <TokenDetails id={tokenID}/>
             <TokenChart id={tokenID} />
           </div>

@@ -93,15 +93,21 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
       setResults([]);
       return;
     }
-    const filteredResults = erc20TokensRef.current.filter((token: Token) =>
+    const filteredNames = erc20TokensRef.current.filter((token: Token) =>
       token.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    const filteredSymbols = erc20TokensRef.current.filter((token: Token) =>
+      token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const filteredResults = [...filteredNames, ...filteredSymbols].filter((value, index, self) => {
+      return index === self.findIndex((t) => t.id === value.id);
+    });
     setSearching(false);
     setResults(filteredResults);
   };
 
   // Wrap searchTokens with debounce to avoid unnecessary re-renders
-  const debouncedSearchTokens = React.useCallback(debounce(searchTokens, 500), []);
+  const debouncedSearchTokens = React.useCallback(debounce(searchTokens, 1000), []);
 
   // Using debouncedSearchTokens to search for tokens on input
   React.useEffect(() => {

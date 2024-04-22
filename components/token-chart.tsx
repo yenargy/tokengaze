@@ -1,58 +1,76 @@
 "use client"
 
 import * as React from "react"
-import { getUserBalance } from '@/lib/wallet-utils';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import Image from "next/image"
+import { convertDataToChartFormat } from "@/lib/utils";
 
 interface TokenDetailsProps {
   id: string;
 }
 
+interface ChartData {
+  time: string,
+  price: number
+}
+
 const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
+  const [chartData, setChartData] = React.useState<ChartData[]>();
 
-  // React.useEffect(() => {
-  //   fetchCoinDataByID(id);
-  // }, [id]);
+  React.useEffect(() => {
+    fetchCoinDataByID(id);
+  }, [id]);
 
-  // const fetchCoinDataByID = (id: string) => {
-  //   const options = {
-  //     method: 'GET',
-  //     headers: {accept: 'application/json', 'x-cg-demo-api-key': process.env.NEXT_PUBLIC_COINGECKO_API_KEY || ''}
-  //   };
-  //   fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${id}`, options)
-  //   .then(response => {
-  //     response.json()
-  //     .then(data => {
-  //       if (data && data.length > 0) {
-  //         setTokenData(data[0]);
-  //       } else {
-  //         console.error("Data is empty or not in expected format", data);
-  //       }
-  //     })
-  //   })
-  //   .catch(err => {
-  //     console.error(err)
-  //   });
-  // };
-
+  const fetchCoinDataByID = (id: string) => {
+    const options = {
+      method: 'GET',
+      headers: {accept: 'application/json', 'x-cg-demo-api-key': process.env.NEXT_PUBLIC_COINGECKO_API_KEY || ''}
+    };
+    fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=1`, options)
+    .then(response => {
+      response.json()
+      .then(data => {
+        console.log(data);
+        const formattedChartData = convertDataToChartFormat(data.prices);
+        setChartData(formattedChartData);
+        console.log(formattedChartData);
+      })
+    })
+    .catch(err => {
+      console.error(err)
+    });
+  };
 
   return (
     <Card className="w-full">
-      <CardHeader>
-          <CardTitle>
-            24 hr Chart
-          </CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-base font-normal">24hr price change</CardTitle>
       </CardHeader>
-      <CardContent>
-        chart goes here
+      <CardContent className="pl-2 pt-8">
+        <div className="h-[480px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart
+              data={chartData}
+              margin={{
+                top: 5,
+                right: 10,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" className="opacity-10"/>
+              <XAxis dataKey="time" className="text-[10px] leading-12"/>
+              <YAxis className="text-[10px]" domain={["dataMin", "dataMax"]} />
+              <Tooltip />
+              <Area type="monotone" dataKey="price" stroke="#8884d8" fill="#8884d8" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );

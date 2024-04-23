@@ -139,7 +139,7 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id, contract }) => {
       </Card>
     </div> 
     : 
-    <div className="flex flex-col space-y-4 max-w-full w-full lg:w-[600px]]">
+    <div className="flex flex-col space-y-4 max-w-full w-full lg:w-[600px]">
       <Card>
         <CardHeader>
           <CardTitle>

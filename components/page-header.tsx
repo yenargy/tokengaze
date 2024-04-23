@@ -7,7 +7,6 @@ import type { Token } from '@/types/token'
 import TokenDetails from "./token-details"
 import TokenChart from "./token-chart"
 import { useAccount } from "wagmi"
-import Image from "next/image"
 
 export default function PageHeader() {
   const { isConnected } = useAccount();
@@ -32,7 +31,7 @@ export default function PageHeader() {
         </div>
         : 
         <>
-          <h1 className='text-3xl md:text-5xl xl:text-7xl text-center font-extralight pt-16'>Search and discover <br/> your erc-20 tokens</h1>
+          <h1 className='text-3xl md:text-5xl xl:text-7xl text-center pt-16'>Search and discover <br/> your erc-20 tokens</h1>
           <p className='text-sm md:text-xl opacity-30 font-light py-6'>Connect your wallet to get started</p>
           <ConnectButton/>
           <img src="/hero-banner.png" alt="hero-banner" className="lg:w-full pt-24 xl:pt-20 opacity-50"/>

@@ -9,7 +9,6 @@ export function cn(...inputs: ClassValue[]) {
 export function parseChartData(data: [number, number][]) {
   return data.map(([timestamp, price]) => ({
     date: new Date(timestamp).toLocaleDateString('en-US', { day: '2-digit', month: 'short' }),
-    priceText: formatCurrency(price, "", "en"),
     price: price
   }));
 }

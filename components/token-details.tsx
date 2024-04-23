@@ -62,7 +62,6 @@ const TokenDetails: React.FC<TokenDetailsProps> = ({ id, contract }) => {
       .then(data => {
         if (data && data.length > 0) {
           const fetchedData = data[0];
-          console.log(fetchedData);
 
           // Setting new state variables
           setTokenPriceData({

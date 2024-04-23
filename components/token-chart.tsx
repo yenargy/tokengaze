@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import {
   Card,
   CardContent,
@@ -9,8 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { parseChartData } from "@/lib/utils";
-import { COINGECKO_API_URL } from "@/config/constants";
-import { formatCurrency } from "@coingecko/cryptoformat";
+import { COINGECKO_API_OPTIONS, COINGECKO_API_URL } from "@/config/constants"
+import { formatCurrency } from "@coingecko/cryptoformat"
 
 interface TokenDetailsProps {
   id: string;
@@ -19,7 +19,6 @@ interface TokenDetailsProps {
 interface ChartData {
   date: string,
   price: number,
-  priceText: string
 }
 
 interface CustomTooltipProps {
@@ -40,16 +39,11 @@ const TokenChart: React.FC<TokenDetailsProps> = ({ id }) => {
 
   // Fetch chart data from coinGecko API
   const fetchCoinDataByID = (id: string) => {
-    const options = {
-      method: 'GET',
-      headers: {accept: 'application/json', 'x-cg-demo-api-key': process.env.NEXT_PUBLIC_COINGECKO_API_KEY || ''}
-    };
-    fetch(`${COINGECKO_API_URL}/${id}/market_chart?vs_currency=usd&days=30&interval=daily`, options)
+    fetch(`${COINGECKO_API_URL}/${id}/market_chart?vs_currency=usd&days=30&interval=daily`, COINGECKO_API_OPTIONS)
     .then(response => {
       response.json()
       .then(data => {
         const formattedChartData = parseChartData(data.prices);
-        console.log(formattedChartData);
         setChartData(formattedChartData);
       })
     })

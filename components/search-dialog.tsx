@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import debounce from 'lodash.debounce';
+import debounce from 'lodash.debounce'
 import {
   CommandDialog,
   CommandEmpty,
@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/command"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import type { Token } from '@/types/token';
-import { Search } from "lucide-react";
-import { COINGECKO_API_URL, SUGGESTED_TOKENS } from "@/config/constants";
+import type { Token } from '@/types/token'
+import { Search } from "lucide-react"
+import { COINGECKO_API_OPTIONS, COINGECKO_API_URL, SUGGESTED_TOKENS } from "@/config/constants"
 
 interface SearchDialogProps {
   onResultClick: (id: Token) => void;
@@ -24,8 +24,8 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
   const [open, setOpen] = React.useState(false)
   const [searching, setSearching] = React.useState(false)
   const [commandInput, setCommandInput] = React.useState<string>("")
-  const [results, setResults] = React.useState<Token[]>([]);
-  const [erc20Tokens, setErc20Tokens] = React.useState<Token[]>([]);
+  const [results, setResults] = React.useState<Token[]>([])
+  const [erc20Tokens, setErc20Tokens] = React.useState<Token[]>([])
 
   // Fetching erc20Tokens on mount
   React.useEffect(() => {
@@ -40,13 +40,9 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
       setSearching(false);
       return;
     }
-  
-    const options = {
-      method: 'GET',
-      headers: {accept: 'application/json', 'x-cg-demo-api-key': process.env.NEXT_PUBLIC_COINGECKO_API_KEY || ''}
-    };
+
     setSearching(true);
-    fetch(`${COINGECKO_API_URL}/list?include_platform=true`, options)
+    fetch(`${COINGECKO_API_URL}/list?include_platform=true`, COINGECKO_API_OPTIONS)
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -125,54 +121,25 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
         <CommandList>
           <CommandEmpty>{ searching ? "Searching...": "No results found." }</CommandEmpty>
           <CommandGroup heading="Suggestions">
+          {SUGGESTED_TOKENS.map((token) => (
             <CommandItem
-              key='pepe' 
-              value='pepe'
-              onSelect={() => {onTokenClick(SUGGESTED_TOKENS[0])}}>
+              key={token.name}
+              value={token.name}
+              onSelect={() => {onTokenClick(token)}}>
               <Image
-                alt='ethereum'
+                alt={token.name}
                 className="aspect-square rounded-3xl object-cover mr-2"
                 height="32"
-                src='https://assets.coingecko.com/coins/images/29850/large/pepe-token.jpeg'
+                src={token.image}
                 width="32"
               />
-              <span>Pepe</span>
+              <span>{token.name}</span>
+              <span className="text-xs pl-2 opacity-20">{token.symbol.toUpperCase()}</span>
               <kbd className="pointer-events-none absolute right-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-20 sm:flex">
                 <span className="text-xs">↵</span>
               </kbd>
             </CommandItem>
-            <CommandItem
-              key='shiba' 
-              value='shiba'
-              onSelect={() => {onTokenClick(SUGGESTED_TOKENS[1])}}>
-              <Image
-                alt='arbitrium'
-                className="aspect-square rounded-3xl object-cover mr-2"
-                height="32"
-                src="https://assets.coingecko.com/coins/images/11939/large/shiba.png"
-                width="32"
-              />
-              <span>Shiba Inu</span>
-              <kbd className="pointer-events-none absolute right-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-20 sm:flex">
-                <span className="text-xs">↵</span>
-              </kbd>
-            </CommandItem>
-            <CommandItem
-              key='arbitrum' 
-              value='arbitrum'
-              onSelect={() => {onTokenClick(SUGGESTED_TOKENS[2])}}>
-              <Image
-                alt='optimism'
-                className="aspect-square rounded-3xl object-cover mr-2"
-                height="32"
-                src="https://assets.coingecko.com/coins/images/16547/large/photo_2023-03-29_21.47.00.jpeg"
-                width="32"
-              />
-              <span>Arbitrum</span>
-              <kbd className="pointer-events-none absolute right-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-20 sm:flex">
-                <span className="text-xs">↵</span>
-              </kbd>
-            </CommandItem>
+          ))}
           </CommandGroup>
             <CommandGroup>
               {results.map(result => (
@@ -181,6 +148,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ onResultClick }) => 
                   value={result.name} 
                   onSelect={() => {onTokenClick(result)}}>
                   <span>{result.name}</span>
+                  <span className="text-xs pl-2 opacity-20">{result.symbol.toUpperCase()}</span>
                   <kbd className="pointer-events-none absolute right-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-20 sm:flex">
                     <span className="text-xs">↵</span>
                   </kbd>

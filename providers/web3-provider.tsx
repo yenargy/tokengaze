@@ -12,7 +12,6 @@ import {
   trustWallet,
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { http } from 'wagmi';
 import {
   arbitrum,
   base,
